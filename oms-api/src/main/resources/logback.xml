@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user -->
+<!-- -->
+<!-- For professional support please see -->
+<!-- http://www.qos.ch/shop/products/professionalSupport -->
+<!-- -->
+<configuration scan="true" scanPeriod="120 seconds" debug="true">
+	<property name="log.base" value="./logs/nh_oms_api" />
+	<appender name="FILEOUT"
+			  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->
+		<File>${log.base}/oms-api.log</File>
+		<encoder>
+			<pattern>%d [%t] %5p %c-%M:%L - %m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<timeBasedFileNamingAndTriggeringPolicy
+					class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>512MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<FileNamePattern>${log.base}/oms-api-%d{yyyy-MM-dd}-%i.log.gz
+			</FileNamePattern>
+			<!--<MaxHistory>1000</MaxHistory>-->
+		</rollingPolicy>
+	</appender>
+	<!--<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">-->
+		<!--<encoder>-->
+			<!--<pattern>%d [%t] %5p \(%F-%M:%L\) - %m%n</pattern>-->
+		<!--</encoder>-->
+	<!--</appender>-->
+	<!-- 彩色日志 -->
+	<!-- 彩色日志依赖的渲染类 -->
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+	<conversionRule conversionWord="wEx"
+					converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+	<!-- 彩色日志格式 -->
+	<property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){blue} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(%F-%M:%L){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />
+			  <!--value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(-&#45;&#45;){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" -->
+
+	<!-- Console 输出设置 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender>
+	<logger name="com.nh.oms" level="info" />
+	<!--<logger name="com.tairan.whale.cloud.mili.dao" level="debug" />-->
+	<root level="info">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILEOUT" />
+	</root>
+
+</configuration>
